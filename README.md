@@ -22,10 +22,36 @@ This example remembers the chat history allowing you to ask follow up questions.
 
 # TL;DR instructions
 
+# ! Important note 
+Before starting the process , make sure that you have already installed cmake , nmake and cl C++ tools using vs build tools  
+
+#### Download the Visual Studio Build Tools bootstrapper
+
+```bash
+Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vs_BuildTools.exe" -OutFile ".\vs_BuildTools.exe"
+
+```
+
+#### Install required components: CMake, MSVC compiler (cl.exe), and NMake (USING Power Shell)
+
+```bash
+Start-Process ".\vs_BuildTools.exe" -Wait -ArgumentList `
+  "--quiet", "--wait", "--norestart", `
+  "--add", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64", `
+  "--add", "Microsoft.VisualStudio.Component.VC.CMake.Project", `
+  "--add", "Microsoft.VisualStudio.Component.Windows10SDK.19041", `
+  "--add", "Microsoft.VisualStudio.Component.VC.ATLMFC", `
+  "--add", "Microsoft.VisualStudio.Component.VC.NMake", `
+  "--includeRecommended", `
+  "--lang", "en-US"
+```
+### After Installation follow this steps - 
+
 1. Install llama-cpp-python
 2. Install langchain
 3. Install streamlit
 4. Run streamlit
+
 
 # Step by Step instructions
 

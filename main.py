@@ -58,8 +58,8 @@ def create_chain(system_prompt):
             # n_batch=512,
             # n_ctx=4096,
             verbose=False,
-            streaming=True,
-            stop=["Human:"]
+            streaming=True
+            # stop=["Human:"] #This line Coz No reponse 
             )
 
     # system_prompt will include instructions to the llm. This might also be
@@ -148,7 +148,7 @@ st.header("Your own Chat!")
 # Try something interesting and notice how the LLM responses are affected.
 system_prompt = st.text_area(
     label="System Prompt",
-    value="You are a helpful AI assistant who answers questions in short sentences.",
+    value="You are a helpful AI assistant. Respond naturally in conversation without using numbered lists or bullet points. Give direct, conversational answers.",
     key="system_prompt")
 
 # Create llm chain to use for our chat bot.
@@ -187,13 +187,20 @@ if user_prompt := st.chat_input("Your message here", key="user_input"):
     # It is worth noting that the Stream Handler is already receiving the
     # streaming response as the llm is generating. We get our response
     # here once the llm has finished generating the complete response.
-    response = llm_chain.invoke(user_prompt)
+   # Create assistant message container
+    with st.chat_message("assistant"):
+        # Show thinking indicator
+        thinking_placeholder = st.empty()
+        thinking_placeholder.markdown("🤔 *Thinking...*")
+        
+        # Generate response
+        response = llm_chain.invoke(user_prompt)
+        
+        # Clear thinking indicator and show response
+        thinking_placeholder.empty()
+        st.markdown(response)
 
     # Add the response to the session state
     st.session_state.messages.append(
         {"role": "assistant", "content": response}
     )
-
-    # Add the response to the chat window
-    with st.chat_message("assistant"):
-        st.markdown(response)
